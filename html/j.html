@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인페이지</title>
+    <link type="text/css" rel="stylesheet" href="../css/mainCalendarTeam.css">
+</head>
+
+<body onload="presentMonth()">
+    <header>
+        <div id="yearBox">
+            <button onclick="previousYearEvent()" class="yearButton"><img class="yearIcon"
+                    src="../image/teamYearLeft.png"></button>
+            <h1 id="year">2023</h1>
+            <button onclick="nextYearEvent()" class="yearButton"><img class="yearIcon"
+                    src="../image/teamYearRight.png"></button>
+        </div>
+        <div id="months">
+            <button class="monthButton" value="1" onclick="daysOfMonth(this)">1</button>
+            <button class="monthButton" value="2" onclick="daysOfMonth(this)">2</button>
+            <button class="monthButton" value="3" onclick="daysOfMonth(this)">3</button>
+            <button class="monthButton" value="4" onclick="daysOfMonth(this)">4</button>
+            <button class="monthButton" value="5" onclick="daysOfMonth(this)">5</button>
+            <button class="monthButton" value="6" onclick="daysOfMonth(this)">6</button>
+            <button class="monthButton" value="7" onclick="daysOfMonth(this)">7</button>
+            <button class="monthButton" value="8" onclick="daysOfMonth(this)">8</button>
+            <button class="monthButton" value="9" onclick="daysOfMonth(this)">9</button>
+            <button class="monthButton" value="10" onclick="daysOfMonth(this)">10</button>
+            <button class="monthButton" value="11" onclick="daysOfMonth(this)">11</button>
+            <button class="monthButton" value="12" onclick="daysOfMonth(this)">12</button>
+        </div>
+    </header>
+    <hr id="divideLine">
+    <nav>
+        <div id="navShortMenu">
+            <img class="menuIcon" src="../image/teamShortMenu.png" onclick="showHidden()">
+        </div>
+
+        <div id="hidden">
+            <img id="cancelMenuIcon" src="../image/close.png" onclick="closeMenu()">
+            <h2>이소현 님 (팀장)</h2>
+            <span class="userInfoFont">ID : sohyunxxi</span>
+            <span class="userInfoFont">부서명 : sohyunxxi</span>
+            <span class="userInfoFont">전화번호 : 010-3243-1578</span>
+            <div id="buttonBox">
+                <span id="teamWatchingInfo">현재 강정연 팀원의 정보를 열람중입니다.</span>
+            </div>
+            <hr class="lineColor">
+            <span id="teamList">팀원 목록</span>
+            <hr class="lineColor">
+            <div id="peopleBox">
+                <span class="navInfo"><a class="teamColor" href="j.html">강정연 (gongsil)</a></span>
+                <span class="navInfo"><a class="noColor" href="k.html">왕준혁 (king)</a></span>
+                <span class="navInfo"><a class="noColor" href="h.html">조희주 (heeju)</a></span>
+            </div>
+            <img id="backIcon" src="../image/back.png">
+        </div>
+    </nav>
+
+    <main>
+
+    </main>
+
+    <div id="modal">
+
+        <div id="innerModal">
+            <span class="close" onclick="closeModalEvent()">&times;</span>
+            <h1 id="modalDate">모달 날짜 나오는곳</h1>
+            <hr>
+            <hr>
+            <div id="planBox">
+                <div class="modalPlan">
+                    <span class="planTime">11 : 30</span>
+                    <span class="planContext">알바 우앵</span>
+                </div>
+                <div class="modalPlan">
+                    <span class="planTime">15 : 30</span>
+                    <span class="planContext">집갈랭</span>
+                </div>
+                <div class="modalPlan">
+                    <span class="planTime">18 : 30</span>
+                    <span class="planContext">배고파아</span>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div id="blackBox">
+
+    </div>
+
+
+    <script src="../js/teamCalendar.js"></script>
+</body>
+
+</html>
