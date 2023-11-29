@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html" pageEncoding="utf-8" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import = "java.sql.SQLException" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,11 +19,11 @@
         <div id="loginBox">
             <div class="insertBox">
                 <span>아이디 : </span>
-                <input id="idBox" type="text" length="14" maxlength="12">
+                <input id="idBox" name="id" type="text" length="14" maxlength="12">
             </div>
             <div class="insertBox">
                 <span>비밀번호 : </span>
-                <input id="pwBox" type="password" length="18" maxlength="16">
+                <input id="pwBox" name="pw" type="password" length="18" maxlength="16">
             </div>
             <button id="button" onclick="checkNull()">로그인</button>
         </div>

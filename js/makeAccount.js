@@ -34,6 +34,7 @@ function searchPw() {
         location.href = "../html/login.html";
     }
 }
+
 function searchId() {
     var idInput = document.getElementById('idBox');
     var tel = document.getElementById('pwBox');
@@ -78,4 +79,10 @@ function validateRadioSelection(inputs) {
         }
     }
     return false;
+}
+
+function selectTeam(value) {//성별 작성
+    var team = value;
+    console.log('Selected Team:', team);
+    // 이 부분에서 서버로 값을 전달하거나 변수에 저장하는 등의 작업을 수행할 수 있습니다.
 }

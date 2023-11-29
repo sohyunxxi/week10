@@ -7,8 +7,8 @@
 
 <%
     request.setCharacterEncoding("utf-8");
-    String idValue = request.getParameter("idBox");
-    String pwValue = request.getParameter("pwBox"); // Assuming pwValue is defined somewhere in your code
+    String idValue = request.getParameter("id");
+    String pwValue = request.getParameter("pw");
     ResultSet rs = null;
 
     try {
