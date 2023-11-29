@@ -57,6 +57,7 @@ function checkNoInput() {
     var numInput = document.getElementById('numBox');
     var teamInputs = document.querySelectorAll('input[name="team"]');
     var companyInputs = document.querySelectorAll('input[name="company"]');
+    var phoneNumberRegex = /^\d+$/;  // 숫자만 허용하는 정규표현식
 
     if (nameInput.value.trim() === '' ||
         idInput.value.trim() === '' ||
@@ -64,6 +65,12 @@ function checkNoInput() {
         confirmPwInput.value.trim() === '' ||
         numInput.value.trim() === '') {
         alert('모든 필수 입력란을 채워주세요.');
+    } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>])\S{6,16}$/.test(pwInput.value.trim())) {
+        alert('비밀번호는 6~16자리이며, 숫자, 영어, 특수문자가 각각 하나 이상 포함되어야 합니다.');
+    } else if (pwInput.value.trim() !== confirmPwInput.value.trim()) {
+        alert('비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+    } else if (!phoneNumberRegex.test(numInput.value.trim())) {
+        alert('전화번호는 숫자만 입력해주세요.');
     } else if (!validateRadioSelection(teamInputs) || !validateRadioSelection(companyInputs)) {
         alert('부서명과 직급을 선택해주세요.');
     } else {
@@ -72,14 +79,15 @@ function checkNoInput() {
     }
 }
 
-function validateRadioSelection(inputs) {
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].checked) {
+function validateRadioSelection(radioInputs) {
+    for (var i = 0; i < radioInputs.length; i++) {
+        if (radioInputs[i].checked) {
             return true;
         }
     }
     return false;
 }
+
 
 function selectTeam(value) {//성별 작성
     var team = value;

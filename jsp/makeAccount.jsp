@@ -39,7 +39,7 @@
             </div>
             <div class="insertBox">
                 <span class="fontSize">전화번호 : </span>
-                <input id="numBox" placeholder="(-) 없이 입력해주세요." name="tel" type="password" length="18" maxlength="16">
+                <input id="numBox" placeholder="(-) 없이 입력해주세요." name="tel" type="text" length="18" maxlength="16">
             </div>
             <div class="insertBox">
                 <span id="selectTeam" class="fontSize">부서명 : </span>
