@@ -1,6 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" contentType="text/html" pageEncoding="utf-8" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import = "java.sql.SQLException" %>
 
+<%
+    request.setCharacterEncoding("utf-8");
+
+// user 테이블에서 가져온 사용자 정보
+int userIdx = /* 여기에 사용자의 idx를 가져오는 코드를 작성하세요 */;
+
+if (userIdx > 0) {
+    // 사용자의 idx가 유효한 경우에만 세션에 저장
+    session.setAttribute("userIdx", userIdx);
+} else {
+    // 사용자의 idx가 유효하지 않으면 로그인 페이지로 리다이렉트
+    response.sendRedirect("signIn.html");
+}
+
+    
+%>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
