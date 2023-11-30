@@ -9,40 +9,36 @@
     request.setCharacterEncoding("utf-8");
     String idValue = request.getParameter("id");
     String pwValue = request.getParameter("pw");
-    ResultSet rs = null;
+    //예외처리
+    ResultSet rs= null;
 
-    try {
+    
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
+        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10","Sohyunxxi","1234");
+   
+        String sql = "SELECT * FROM user WHERE id= ?";
 
-        String sql = "SELECT * FROM user WHERE id = ? AND pw = ?";
-
+        
         PreparedStatement query = connect.prepareStatement(sql);
-
-        query.setString(1, idValue);
-        query.setString(2, pwValue);
-
-        rs = query.executeQuery();
-
-        if (rs.next()) {
-            int userIdx = rs.getInt("idx");
+  
+        query.setString(1,idValue); 
+        
+        rs=query.executeQuery();
+        if(rs.next()){
             String dbId = rs.getString("id");
-            String dbPw = rs.getString("pw");
-
-            if (pwValue.equals(dbPw)) {
-                session.setAttribute("userIdx", userIdx);
-                session.setAttribute("id", dbId);
-                session.setAttribute("pw", dbPw);
+            String dbpw = rs.getString("pw");
+            int idx = rs.getInt("user_idx");
+            if(pwValue.equals(dbpw)){
+                session.setAttribute("userId", idValue);
+                session.setAttribute("userPw", pwValue);
+                session.setAttribute("userIdx", idx);
                 response.sendRedirect("mainCalendar.jsp");
+                return; // Redirect 후에 더 이상의 코드를 실행하지 않도록 종료
             } else {
                 response.sendRedirect("login.jsp");
+                return; // Redirect 후에 더 이상의 코드를 실행하지 않도록 종료
             }
         } else {
             response.sendRedirect("login.jsp");
         }
-    } 
-    catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
-    }
-%>
-
+    %>

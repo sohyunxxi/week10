@@ -5,17 +5,40 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 
-<% 
-   request.setCharacterEncoding("utf-8");
-   int userIdx = (int)session.getAttribute("userIdx");
+<%
+    request.setCharacterEncoding("utf-8");
+    int userIdx = 1; // 임시로 userIdx를 1로 설정
+    session.setAttribute("userIdx", userIdx);
 
-   if (userIdx > 0) {
-       // 사용자의 idx가 유효한 경우에만 세션에 저장
-       session.setAttribute("userIdx", userIdx);
-   } else {
-       // 사용자의 idx가 유효하지 않으면 로그인 페이지로 리다이렉트
-       response.sendRedirect("login.jsp");
-   }
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
+
+        String sql = "SELECT * FROM user where idx = ?";
+        PreparedStatement query = connect.prepareStatement(sql);
+        query.setInt(1, userIdx);
+
+        ResultSet rs = query.executeQuery();
+        if (rs.next()) {
+            String userName = rs.getString("name");
+            String id = rs.getString("id");
+            String password = rs.getString("pw");
+            int tel = rs.getInt("tel");
+            String team = rs.getString("department");
+            String department = rs.getString("role"); // 변수를 선언
+
+            // 필요에 따라 사용할 수 있도록 세션에 저장
+            session.setAttribute("name", userName);
+            session.setAttribute("id", id);
+            session.setAttribute("password", password);
+            session.setAttribute("tel", tel);
+            session.setAttribute("team", team);
+            session.setAttribute("department", department);
+            System.out.println("세션 이름: " + session.getAttribute("name"));
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
 %>
 <head>
     <meta charset="UTF-8">
@@ -58,10 +81,10 @@
 
         <div id="hidden">
             <img id="cancelMenuIcon" src="../image/close.png" onclick="closeMenu()">
-            <h2>이소현 님 (팀장)</h2>
-            <span class="userInfoFont">ID : sohyunxxi</span>
-            <span class="userInfoFont">부서명 : sohyunxxi</span>
-            <span class="userInfoFont">전화번호 : 010-3243-1578</span>
+            <h2></h2>
+            <span class="userInfoFont">ID : <%=session.getAttribute("name") %></span>
+            <span class="userInfoFont">부서명 : <%=session.getAttribute("team")%></span>
+            <span class="userInfoFont">전화번호 : <%=session.getAttribute("tel") %></span>
             <div id="buttonBox">
                 <button class="navButton"><a class="noColor" href="showInfo.html">내 정보</a></button>
                 <button class="navButton"><a class="noColor" href="login.html">로그아웃</a></button>
