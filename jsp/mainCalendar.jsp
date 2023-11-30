@@ -5,6 +5,9 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.sql.Timestamp" %>
 
 <%
     request.setCharacterEncoding("utf-8");
@@ -24,8 +27,6 @@
     Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10","Sohyunxxi","1234");
 
     String sql = "SELECT user_idx, id, name FROM user WHERE department= ? AND role = '팀원'";
-
-    
     PreparedStatement query = connect.prepareStatement(sql);
 
     query.setString(1,team);
@@ -36,13 +37,32 @@
 
     ArrayList<String> nameList= new ArrayList<String>();
     ArrayList<String> idList= new ArrayList<String>();
-        
+
     while(result.next()){ // next가 가능할 때까지 반복문을 돌린다.
         String t_id=result.getString(2);// 첫번째 컬럼
         String t_name=result.getString(3);// 두번째 컬럼
         nameList.add("\""+t_name +"\"");
         idList.add("\""+t_id+"\"");
-    }           
+    }
+
+    String eventSql = "SELECT start_time, event_content FROM event WHERE user_idx = ? ORDER BY start_time ASC";
+    PreparedStatement eventQuery = connect.prepareStatement(eventSql);
+    eventQuery.setInt(1, idx);
+
+    ResultSet eventRs = eventQuery.executeQuery();
+
+    ArrayList<String> timeList = new ArrayList<>();
+    ArrayList<String> eventList = new ArrayList<>();
+
+    while (eventRs.next()) {
+        LocalDateTime e_time = eventRs.getObject(1, LocalDateTime.class);
+        String formattedTime = String.format("%02d:%02d", e_time.getHour(), e_time.getMinute());
+        String e_eventContent = eventRs.getString(2);
+
+        timeList.add("\"" + formattedTime + "\"");
+        eventList.add("\"" + e_eventContent + "\"");
+    }
+    
 %>
 
 <head>
@@ -55,9 +75,13 @@
 <body onload="presentMonth()">
     <header>
         <div id="yearBox">
-            <button onclick="previousYearEvent()" class="yearButton"><img class="yearImage"
-                    src="../image/year_left.png"></button>
-            <h1 id="year">2023</h1>
+            <button onclick="previousYearEvent()" class="yearButton">
+                <img class="yearImage" src="../image/year_left.png">
+            </button>
+                    <form action="makeEvent.jsp">
+                        <h1 id="year" name="year">2023</h1>
+                        <input type="hidden" id="yearHidden" name="year" value="2023">
+                    </form>
             <button onclick="nextYearEvent()" class="yearButton"><img class="yearImage"
                     src="../image/year_right.png"></button>
         </div>
@@ -101,8 +125,6 @@
                 
             </div>
 
-
-
         </div>
     </nav>
 
@@ -114,7 +136,9 @@
 
         <div id="innerModal">
             <span class="close" onclick="closeModalEvent()">&times;</span>
-            <h1 id="modalDate">모달 날짜 나오는곳</h1>
+            <form action="makeEvent.jsp">
+                <h2 id="modalDate" >모달 날짜 나오는곳</h2>
+                <input type="hidden" id="eventDate" name="eventDate" value="날짜">
             <span id="planCount">+3</span>
             <hr>
             <hr>
@@ -186,7 +210,7 @@
             <hr>
             <h3>일정 추가</h3>
             <hr>
-            <form action="makeEvent.jsp">
+           
                 <div id="modalTimeBox">
                     <span>일정 시간</span>
                     <div class="modalTime">
@@ -197,6 +221,7 @@
                                     src="../image/downButton.png"></button>
                         </div>
                         <span class="modalTimeNum hour">00</span>
+                        <input type="hidden" name="hourHidden" class="modalTimeNum" value="00">
 
                         <span class="modalTimeNum">시</span>
                     </div>
@@ -208,15 +233,16 @@
                                     src="../image/downButton.png"></button>
                         </div>
                         <span class="modalTimeNum minute">00</span>
+                        <input type="hidden" name="minuteHidden" class="modalTimeNum" value="00">
                         <span class="modalTimeNum">분</span>
                     </div>
                 </div>
                 <div id="planInputBox">
                     <span>일정 내용</span>
-                    <textarea class="planInput" placeholder="최대 50자까지 적을 수 있습니다. " cols="55" rows="5"
+                    <textarea class="planInput" name="eventContent" placeholder="최대 50자까지 적을 수 있습니다. " cols="55" rows="5"
                         maxlength="50"></textarea>
                 </div>
-                <button type="button" class="modalPlanButton">등록</button>
+                <button class="modalPlanButton">등록</button>
             </form>
         </div>
 
@@ -245,6 +271,21 @@
         span.appendChild(a);
         peopleBox.appendChild(span);
     }
+
+    var timeList = <%=timeList%>;
+    var eventList = <%=eventList%>;
+    var planBox = document.getElementById("planBox");
+
+    for (var i = 0; i < timeList.length; i++) {
+    var div = document.createElement("div");
+    var span = document.createElement("span");
+    span.className = "planContext";
+    span.innerText = "일정시간 " + timeList[i] + " 일정내용 " + eventList[i];
+    div.appendChild(span);  // div에 span을 추가해야 합니다.
+    planBox.appendChild(div);  // planBox에 div를 추가해야 합니다.
+}
+
+
 
 </script>
 </html>

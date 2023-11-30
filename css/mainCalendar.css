@@ -580,6 +580,9 @@ main {
         color: #385723;
     }
 
+    /* #modalDate{
+        color:#000000;
+    } */
     #modal {
         display: none;
         position: fixed;

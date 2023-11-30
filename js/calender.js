@@ -48,20 +48,27 @@ function presentMonth() {
 
 function previousYearEvent() {
     var year = document.getElementById('year');
+    var yearHidden = document.getElementById('yearHidden');
+
     if (year) {
         var num = parseInt(year.textContent);
+        var numHidden = parseInt(yearHidden.value);
         if (num > 0) {
             year.innerText = (num - 1).toString().padStart(4, '0');
+            yearHidden.value =  (numHidden - 1).toString().padStart(4, '0');
         }
     }
 }
 
 function nextYearEvent() {
     var year = document.getElementById('year');
+    var yearHidden = document.getElementById('yearHidden');
     if (year) {
         var num = parseInt(year.textContent);
+        var numHidden = parseInt(yearHidden.value);
         if (num < 9999) {
             year.innerText = (num + 1).toString().padStart(4, '0');
+            yearHidden.value =  (numHidden + 1).toString().padStart(4, '0');
         }
     }
 }
@@ -121,9 +128,14 @@ function openModalEvent(selectedMonth, day) {
 
     var modal = document.getElementById('modal');
     var modalDate = document.getElementById('modalDate');
+    var eventDate = document.getElementById('eventDate');
 
     // 전달받은 날짜를 모달 내부의 텍스트로 설정
+    eventDate.value = selectedMonth + "월 " + day + "일 ";
     modalDate.textContent = selectedMonth + "월 " + day + "일 " + "일정";
+    console.log(eventDate.value);
+    
+
     modal.style.display = 'flex'; 
 }
 
@@ -206,24 +218,33 @@ function closeModalEvent() {
 }
 function timeBack(unit) {
     var numElement = document.querySelector('.modalTimeNum.' + unit);
-    if (numElement) {
+    var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
+
+    if (numElement && hiddenInputElement) {
         var currentNum = parseInt(numElement.textContent);
+
         if (currentNum > 0) {
             numElement.textContent = (currentNum - 1).toString().padStart(2, '0');
+            hiddenInputElement.value = numElement.textContent;
         }
     }
 }
 
 function timeFront(unit) {
     var numElement = document.querySelector('.modalTimeNum.' + unit);
-    if (numElement) {
+    var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
+
+    if (numElement && hiddenInputElement) {
         var currentNum = parseInt(numElement.textContent);
         if (unit === 'hour' && currentNum < 23) {
             numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
+            hiddenInputElement.value = numElement.textContent;
         } else if (unit === 'minute' && currentNum < 59) {
             numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
+            hiddenInputElement.value = numElement.textContent;
         }
     }
 }
+
 
 
