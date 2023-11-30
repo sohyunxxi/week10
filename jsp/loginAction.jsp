@@ -28,10 +28,18 @@
             String dbId = rs.getString("id");
             String dbpw = rs.getString("pw");
             int idx = rs.getInt("user_idx");
+            int tel = rs.getInt("tel");
+            String team = rs.getString("department");
+            String role = rs.getString("role");
+            String name = rs.getString("name");
             if(pwValue.equals(dbpw)){
                 session.setAttribute("userId", idValue);
                 session.setAttribute("userPw", pwValue);
                 session.setAttribute("userIdx", idx);
+                session.setAttribute("tel", tel);
+                session.setAttribute("team", team);
+                session.setAttribute("role", role);
+                session.setAttribute("userName", name);
                 response.sendRedirect("mainCalendar.jsp");
                 return; // Redirect 후에 더 이상의 코드를 실행하지 않도록 종료
             } else {

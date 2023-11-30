@@ -7,39 +7,18 @@
 
 <%
     request.setCharacterEncoding("utf-8");
-    int userIdx = 1; // 임시로 userIdx를 1로 설정
-    session.setAttribute("userIdx", userIdx);
-
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
-
-        String sql = "SELECT * FROM user where idx = ?";
-        PreparedStatement query = connect.prepareStatement(sql);
-        query.setInt(1, userIdx);
-
-        ResultSet rs = query.executeQuery();
-        if (rs.next()) {
-            String userName = rs.getString("name");
-            String id = rs.getString("id");
-            String password = rs.getString("pw");
-            int tel = rs.getInt("tel");
-            String team = rs.getString("department");
-            String department = rs.getString("role"); // 변수를 선언
-
-            // 필요에 따라 사용할 수 있도록 세션에 저장
-            session.setAttribute("name", userName);
-            session.setAttribute("id", id);
-            session.setAttribute("password", password);
-            session.setAttribute("tel", tel);
-            session.setAttribute("team", team);
-            session.setAttribute("department", department);
-            System.out.println("세션 이름: " + session.getAttribute("name"));
-        }
-    } catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
+    String name = (String)session.getAttribute("userName");
+    String id = (String)session.getAttribute("userId");
+    String pw = (String)session.getAttribute("userPw");
+    String role = (String)session.getAttribute("role");
+    String team =(String)session.getAttribute("team");
+    int tel = (Integer)session.getAttribute("tel");
+    if (name==null){
+        response.sendRedirect("login.jsp");
     }
+    
 %>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,13 +60,13 @@
 
         <div id="hidden">
             <img id="cancelMenuIcon" src="../image/close.png" onclick="closeMenu()">
-            <h2></h2>
-            <span class="userInfoFont">ID : <%=session.getAttribute("name") %></span>
-            <span class="userInfoFont">부서명 : <%=session.getAttribute("team")%></span>
-            <span class="userInfoFont">전화번호 : <%=session.getAttribute("tel") %></span>
+            <h2><%=name %> 님</h2>
+            <span class="userInfoFont">ID : <%=id %></span>
+            <span class="userInfoFont">부서명 : <%=team%></span>
+            <span class="userInfoFont">전화번호 : <%=tel %></span>
             <div id="buttonBox">
-                <button class="navButton"><a class="noColor" href="showInfo.html">내 정보</a></button>
-                <button class="navButton"><a class="noColor" href="login.html">로그아웃</a></button>
+                <button class="navButton"><a class="noColor" href="showInfo.jsp">내 정보</a></button>
+                <button class="navButton"><a class="noColor" href="logout.jsp">로그아웃</a></button>
             </div>
             <hr class="lineColor">
             <span id="teamList">팀원 목록</span>

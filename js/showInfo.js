@@ -3,7 +3,15 @@ function showPwEvent() {
     var button = document.getElementById('checkButton');
     hidden.style.display = "block";
     button.style.display = "none";
-} function updateEvent() {
+
+    // 3초 후에 다시 숨김 처리
+    setTimeout(function() {
+        hidden.style.display = "none";
+        button.style.display = "block";
+    }, 3000); // 3000 밀리초(3초) 후에 실행
+}
+
+function updateEvent() {
     var pwInput = document.getElementById('pwBox');
     var confirmPwInput = document.getElementById('confirmPwBox');
     var numInput = document.getElementById('telBox'); 
