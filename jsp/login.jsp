@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1 id="mainFont">LOG IN</h1>
-    <form action="loginAction.jsp" onsubmit="return checkNull()">
+    <form action="loginAction.jsp" onsubmit="checkNull()">
         <div id="loginBox">
             <div class="insertBox">
                 <span>아이디 : </span>

@@ -15,21 +15,23 @@
 </head>
 <body>
     <h1 id="mainFont">비밀번호 찾기</h1>
-    <div id="loginBox">
-        <div class="insertBox">
-            <span id="nameFont">이름 : </span>
-            <input id="nameBox" name="name" type="text" length="14" maxlength="12">
+    <form action="findPwAction.jsp">
+        <div id="loginBox">
+            <div class="insertBox">
+                <span id="nameFont">이름 : </span>
+                <input id="nameBox" name="name" type="text" length="14" maxlength="12">
+            </div>
+            <div class="insertBox">
+                <span>아이디 : </span>
+                <input id="idBox" name="id" type="text" length="18" maxlength="16">
+            </div>
+            <div class="insertBox">
+                <span>전화번호 : </span>
+                <input id="pwBox" name="tel" type="text" length="18" maxlength="16">
+            </div>
+            <button id="button" >비밀번호 찾기</button>
         </div>
-        <div class="insertBox">
-            <span>아이디 : </span>
-            <input id="idBox" name="id" type="text" length="18" maxlength="16">
-        </div>
-        <div class="insertBox">
-            <span>전화번호 : </span>
-            <input id="pwBox" name="tel" type="text" length="18" maxlength="16">
-        </div>
-        <button id="button" onclick="searchPw()">비밀번호 찾기</button>
-    </div>
+    </form>
     <script src="../js/makeAccount.js"></script>
 </body>
 </html>

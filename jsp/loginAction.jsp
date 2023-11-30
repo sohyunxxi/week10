@@ -3,7 +3,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
+<%@ page import = "java.sql.SQLException" %>
 
 <%
     request.setCharacterEncoding("utf-8");
@@ -13,9 +13,9 @@
 
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week6", "Sohyunxxi", "1234");
+        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
 
-        String sql = "SELECT idx, id, pw FROM user WHERE id = ? AND pw = ?";
+        String sql = "SELECT * FROM user WHERE id = ? AND pw = ?";
 
         PreparedStatement query = connect.prepareStatement(sql);
 
@@ -27,10 +27,12 @@
         if (rs.next()) {
             int userIdx = rs.getInt("idx");
             String dbId = rs.getString("id");
-            String dbpw = rs.getString("pw");
+            String dbPw = rs.getString("pw");
 
-            if (pwValue.equals(dbpw)) {
+            if (pwValue.equals(dbPw)) {
                 session.setAttribute("userIdx", userIdx);
+                session.setAttribute("id", dbId);
+                session.setAttribute("pw", dbPw);
                 response.sendRedirect("mainCalendar.jsp");
             } else {
                 response.sendRedirect("login.jsp");
@@ -38,7 +40,9 @@
         } else {
             response.sendRedirect("login.jsp");
         }
-    } catch (SQLException | ClassNotFoundException e) {
+    } 
+    catch (SQLException | ClassNotFoundException e) {
         e.printStackTrace();
     }
 %>
+

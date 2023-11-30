@@ -18,7 +18,7 @@
 <body>
     
     <h1 id="mainFont">회원가입</h1>
-    <form action="loginAction.jsp" onsubmit="return checkNoInput()">
+    <form action="makeAccountAction.jsp" onsubmit="return checkNoInput()">
         <div id="loginBox">
             <div class="insertBox">
                 <span id="nameFont" class="fontSize">이름 : </span>
@@ -27,7 +27,8 @@
             <div class="insertBox">
                 <span id="idFont" class="fontSize">아이디 : </span>
                 <input id="idBox" placeholder="4~10자리 사이" name="id" type="text" length="18" maxlength="16">
-                <button id="checkButton" onclick="checkDuplicate()">중복확인</button>
+                <button type="button" id="checkButton" onclick="checkIdDuplicate()">중복확인</button>
+                <input type="hidden" name="idDuplication" value="unchecked">
             </div>
             <div class="insertBox">
                 <span class="fontSize">비밀번호 : </span>
@@ -56,9 +57,16 @@
                 </div>
             </div>
         </div>
-    </form>
-    <button id="button" onclick="checkInput()">회원가입 하기</button>
 
+
+    <button id="button" onclick="checkNoInput()">회원가입 하기</button>
+</form>
+
+    <div id="myModal" class="modal">
+        <p id="modalText"></p>
+        <button onclick="closeModal()">닫기</button>
+        <button id="useIdButton" onclick="useId()">아이디 사용하기</button>
+    </div>
     <script src="../js/makeAccount.js"></script>
 </body>
 

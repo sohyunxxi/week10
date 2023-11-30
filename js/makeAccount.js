@@ -1,14 +1,69 @@
-function checkDuplicate() {
+function checkIdDuplicate() {
     var idInput = document.getElementById('idBox');
-
-    if (idInput.value.trim() === '') {
+    var idValue = idInput.value.trim();
+    var idRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,12}$/;  // 영어와 숫자를 포함하고, 4자리 이상 12자리 이하
+    if (idValue === '') {
         alert('아이디를 입력하세요.');
+    }else if (!idRegex.test(idInput.value.trim())) {
+        alert('아이디는 영어와 숫자를 포함하여 4자리 이상 12자리 이하로 설정해주세요.');
+    }else {
+        // Ajax to check duplicate ID
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                handleDuplicateCheckResponse(xhr.responseText);
+            }
+        };
+        xhr.open('POST', 'checkIdDuplicate.jsp', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // console.log('idValue:', idValue);
+        xhr.send('id=' + idValue);
     }
-    else {
-        alert("해당 아이디는 사용 가능합니다 / 해당 아이디는 중복이 아닙니다!");
+}
+
+function handleDuplicateCheckResponse(response) {
+    var modalText = document.getElementById('modalText');
+    var useIdButton = document.getElementById('useIdButton');
+    var modal = document.getElementById('myModal');
+    var idInput = document.getElementById('idBox');
+    var checkButton = document.getElementById('checkButton');
+
+    if (response === 'true') {
+        modalText.textContent = '해당 아이디는 중복입니다. 다른 아이디를 사용해 주세요.';
+        useIdButton.style.display = 'none';
+        idInput.disabled = true; // 아이디 입력 상자를 비활성화
+        checkButton.style.display = 'none'; // 중복 확인 버튼을 숨김
+    } else {
+        modalText.textContent = '해당 아이디는 사용이 가능합니다.';
+        useIdButton.style.display = 'inline-block';
     }
 
+    // Show the modal
+    modal.style.display = 'block';
 }
+
+function useId() {
+    // 아이디 사용하기 버튼을 누른 경우의 처리
+    alert('아이디를 사용하셨습니다.');
+
+    // 아이디 입력 상자 비활성화
+    var idInput = document.getElementById('idBox');
+    idInput.disabled = true;
+
+    // 중복 확인 버튼 숨기기
+    var checkButton = document.getElementById('checkButton');
+    checkButton.style.display = 'none';
+
+    // 모달 창 닫기
+    closeModal();
+}
+
+function closeModal() {
+    // 모달 창 닫기
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
+
 
 
 function checkNull() {
@@ -18,9 +73,10 @@ function checkNull() {
     if (idInput.value.trim() === '' || pwInput.value.trim() === '') {
         alert('아이디와 비밀번호를 입력하세요.');
     } else {
-        location.href = "../html/mainCalendar.html";
+        location.href="../jsp/loginAction.jsp"
     }
 }
+
 
 function searchPw() {
     var idInput = document.getElementById('idBox');
@@ -31,7 +87,7 @@ function searchPw() {
         alert('아이디와 이름, 전화번호를 제대로 입력해 주세요.');
     } else {
         alert('비밀번호는 어쩌구 입니다.');
-        location.href = "../html/login.html";
+        location.href = "../jsp/login.jsp";
     }
 }
 
@@ -43,7 +99,7 @@ function searchId() {
         alert('이름과 전화번호를 입력하세요.');
     } else {
         alert('아이디는 어쩌구 입니다.');
-        location.href = "../html/login.html";
+        location.href = "../jsp/login.jsp";
     }
 }
 
@@ -58,6 +114,7 @@ function checkNoInput() {
     var teamInputs = document.querySelectorAll('input[name="team"]');
     var companyInputs = document.querySelectorAll('input[name="company"]');
     var phoneNumberRegex = /^\d+$/;  // 숫자만 허용하는 정규표현식
+    var idRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,12}$/;  // 영어와 숫자를 포함하고, 4자리 이상 12자리 이하
 
     if (nameInput.value.trim() === '' ||
         idInput.value.trim() === '' ||
@@ -65,6 +122,8 @@ function checkNoInput() {
         confirmPwInput.value.trim() === '' ||
         numInput.value.trim() === '') {
         alert('모든 필수 입력란을 채워주세요.');
+    } else if (!idRegex.test(idInput.value.trim())) {
+        alert('아이디는 영어와 숫자를 포함하여 4자리 이상 12자리 이하로 설정해주세요.');
     } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>])\S{6,16}$/.test(pwInput.value.trim())) {
         alert('비밀번호는 6~16자리이며, 숫자, 영어, 특수문자가 각각 하나 이상 포함되어야 합니다.');
     } else if (pwInput.value.trim() !== confirmPwInput.value.trim()) {
@@ -74,8 +133,8 @@ function checkNoInput() {
     } else if (!validateRadioSelection(teamInputs) || !validateRadioSelection(companyInputs)) {
         alert('부서명과 직급을 선택해주세요.');
     } else {
-        alert('회원가입에 성공하였습니다.');
-        location.href = "../html/logIn.html";
+        alert('회원가입에 성공하였습니다. 로그인해 주세요');
+        location.href = "../jsp/logIn.jsp";
     }
 }
 
@@ -87,6 +146,7 @@ function validateRadioSelection(radioInputs) {
     }
     return false;
 }
+
 
 
 function selectTeam(value) {//성별 작성
