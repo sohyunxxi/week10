@@ -12,7 +12,7 @@
 
     // Database connection
     Class.forName("com.mysql.jdbc.Driver");
-    Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week6", "Sohyunxxi", "1234");
+    Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
 
     // SQL query to check if the ID already exists
     String sql = "SELECT * FROM user WHERE id=?";

@@ -4,22 +4,19 @@ function checkIdDuplicate() {
     var idRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,12}$/;  // 영어와 숫자를 포함하고, 4자리 이상 12자리 이하
     if (idValue === '') {
         alert('아이디를 입력하세요.');
-    }else if (!idRegex.test(idInput.value.trim())) {
+    } else if (!idRegex.test(idInput.value.trim())) {
         alert('아이디는 영어와 숫자를 포함하여 4자리 이상 12자리 이하로 설정해주세요.');
-    }else {
-        // Ajax to check duplicate ID
+    } else {
+        // 동기적 AJAX 요청 사용
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                handleDuplicateCheckResponse(xhr.responseText);
-            }
-        };
-        xhr.open('POST', 'checkIdDuplicate.jsp', true);
+        xhr.open('POST', 'checkIdDuplicate.jsp', false); // 세 번째 매개변수를 false로 설정하여 동기 요청 사용
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // console.log('idValue:', idValue);
         xhr.send('id=' + idValue);
+
+        handleDuplicateCheckResponse(xhr.responseText);
     }
 }
+
 
 function handleDuplicateCheckResponse(response) {
     var modalText = document.getElementById('modalText');

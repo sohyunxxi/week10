@@ -4,6 +4,7 @@
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%
     request.setCharacterEncoding("utf-8");
@@ -19,6 +20,29 @@
         response.sendRedirect("login.jsp");
     }
     
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10","Sohyunxxi","1234");
+
+    String sql = "SELECT user_idx, id, name FROM user WHERE department= ? AND role = '팀원'";
+
+    
+    PreparedStatement query = connect.prepareStatement(sql);
+
+    query.setString(1,team);
+
+    ResultSet rs= null;
+    rs=query.executeQuery();
+    ResultSet result = query.executeQuery();
+
+    ArrayList<String> nameList= new ArrayList<String>();
+    ArrayList<String> idList= new ArrayList<String>();
+        
+    while(result.next()){ // next가 가능할 때까지 반복문을 돌린다.
+        String t_id=result.getString(2);// 첫번째 컬럼
+        String t_name=result.getString(3);// 두번째 컬럼
+        nameList.add("\""+t_name +"\"");
+        idList.add("\""+t_id+"\"");
+    }           
 %>
 
 <head>
@@ -63,9 +87,9 @@
         <div id="hidden">
             <img id="cancelMenuIcon" src="../image/close.png" onclick="closeMenu()">
             <h2><%=name %> 님</h2>
-            <span class="userInfoFont">ID : <%=id %></span>
-            <span class="userInfoFont">부서명 : <%=team%></span>
-            <span class="userInfoFont">전화번호 : <%=tel %></span>
+            <span class="userInfoFont">ID : <%=id %> </span>
+            <span class="userInfoFont">부서명 : <%=team%> </span>
+            <span class="userInfoFont">전화번호 : <%=tel %> </span>
             <div id="buttonBox">
                 <button class="navButton"><a class="noColor" href="showInfo.jsp">내 정보</a></button>
                 <button class="navButton"><a class="noColor" href="logout.jsp">로그아웃</a></button>
@@ -74,10 +98,10 @@
             <span id="teamList">팀원 목록</span>
             <hr class="lineColor">
             <div id="peopleBox">
-                <span class="navInfo"><a class="noColor" href="j.html">강정연 (gongsil)</a></span>
-                <span class="navInfo"><a class="noColor" href="k.html">왕준혁 (king)</a></span>
-                <span class="navInfo"><a class="noColor" href="h.html">조희주 (heeju)</a></span>
+                
             </div>
+
+
 
         </div>
     </nav>
@@ -95,7 +119,7 @@
             <hr>
             <hr>
             <div id="planBox">
-                <div class="modalPlan">
+                <!-- <div class="modalPlan">
                     <span class="planTime">
                         <div class="modalButtonsHidden">
                             <button onclick="timeFront('minute')"><img class="modalButtonPic"
@@ -157,41 +181,43 @@
                         <button class="modalPlanButton" onclick="updatePlanEvent(event)">수정</button>
                         <button class="modalPlanButton" onclick="deletePlanEvent(event)">삭제</button>
                     </div>
-                </div>
+                </div> -->
             </div>
             <hr>
             <h3>일정 추가</h3>
             <hr>
-            <div id="modalTimeBox">
-                <span>일정 시간</span>
-                <div class="modalTime">
-                    <div class="modalButtons">
-                        <button onclick="timeFront('hour')"><img class="modalButtonPic"
-                                src="../image/upButton.png"></button>
-                        <button onclick="timeBack('hour')"><img class="modalButtonPic"
-                                src="../image/downButton.png"></button>
-                    </div>
-                    <span class="modalTimeNum hour">00</span>
+            <form action="makeEvent.jsp">
+                <div id="modalTimeBox">
+                    <span>일정 시간</span>
+                    <div class="modalTime">
+                        <div class="modalButtons">
+                            <button type="button" onclick="timeFront('hour')"><img class="modalButtonPic"
+                                    src="../image/upButton.png"></button>
+                            <button type="button" onclick="timeBack('hour')"><img class="modalButtonPic"
+                                    src="../image/downButton.png"></button>
+                        </div>
+                        <span class="modalTimeNum hour">00</span>
 
-                    <span class="modalTimeNum">시</span>
-                </div>
-                <div class="modalTime">
-                    <div class="modalButtons">
-                        <button onclick="timeFront('minute')"><img class="modalButtonPic"
-                                src="../image/upButton.png"></button>
-                        <button onclick="timeBack('minute')"><img class="modalButtonPic"
-                                src="../image/downButton.png"></button>
+                        <span class="modalTimeNum">시</span>
                     </div>
-                    <span class="modalTimeNum minute">00</span>
-                    <span class="modalTimeNum">분</span>
+                    <div class="modalTime">
+                        <div class="modalButtons">
+                            <button type="button" onclick="timeFront('minute')"><img class="modalButtonPic"
+                                    src="../image/upButton.png"></button>
+                            <button type="button" onclick="timeBack('minute')"><img class="modalButtonPic"
+                                    src="../image/downButton.png"></button>
+                        </div>
+                        <span class="modalTimeNum minute">00</span>
+                        <span class="modalTimeNum">분</span>
+                    </div>
                 </div>
-            </div>
-            <div id="planInputBox">
-                <span>일정 내용</span>
-                <textarea class="planInput" placeholder="최대 50자까지 적을 수 있습니다. " cols="55" rows="5"
-                    maxlength="50"></textarea>
-            </div>
-            <button class="modalPlanButton">등록</button>
+                <div id="planInputBox">
+                    <span>일정 내용</span>
+                    <textarea class="planInput" placeholder="최대 50자까지 적을 수 있습니다. " cols="55" rows="5"
+                        maxlength="50"></textarea>
+                </div>
+                <button type="button" class="modalPlanButton">등록</button>
+            </form>
         </div>
 
     </div>
@@ -203,5 +229,23 @@
 
     <script src="../js/calender.js"></script>
 </body>
+<script>
+    var idList = <%=idList%>;
+    var nameList = <%=nameList%>;
 
+    // 팀원 목록을 동적으로 생성하여 추가
+    var peopleBox = document.getElementById("peopleBox");
+    for (var i = 0; i < idList.length; i++) {
+        var span = document.createElement("span");
+        span.className = "navInfo";
+        var a = document.createElement("a");
+        a.className = "noColor";
+        a.href = "#"; // 이 부분에 링크를 추가하려면 적절한 링크를 지정하세요.
+        a.innerText = nameList[i] + " (" + idList[i] + ")";
+        span.appendChild(a);
+        peopleBox.appendChild(span);
+    }
+
+</script>
 </html>
+
