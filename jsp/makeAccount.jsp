@@ -18,7 +18,7 @@
 <body>
     
     <h1 id="mainFont">회원가입</h1>
-    <form action="makeAccountAction.jsp" onsubmit="return checkNoInput()">
+    <form action="makeAccountAction.jsp">
         <div id="loginBox">
             <div class="insertBox">
                 <span id="nameFont" class="fontSize">이름 : </span>

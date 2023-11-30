@@ -25,8 +25,7 @@ function updateEvent() {
         if (pwInput.value !== confirmPwInput.value) {
             alert('비밀번호가 일치하지 않습니다.');
         } else {
-            alert('정보를 성공적으로 수정하였습니다.');
-            location.href = "../html/showInfo.html";
+            
         }
     }
 }
@@ -38,10 +37,10 @@ function moveBackEvent() {
     window.history.back();
 }
 
-function deleteEvent() {
-    var returnValue = confirm("정말 탈퇴하시겠습니까?");
-    if (returnValue) {
-        alert("회원을 탈퇴하였습니다.안녕히 가십시오.")
-        location.href = "../html/login.html";
-    }
-}
+// function deleteEvent() {
+//     var returnValue = confirm("정말 탈퇴하시겠습니까?");
+//     if (returnValue) {
+//         alert("회원을 탈퇴하였습니다.안녕히 가십시오.")
+//         location.href = "../jsp/logout.jsp";
+//     }
+// }

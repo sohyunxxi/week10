@@ -12,7 +12,9 @@
     String pw = (String)session.getAttribute("userPw");
     String role = (String)session.getAttribute("role");
     String team =(String)session.getAttribute("team");
-    int tel = (Integer)session.getAttribute("tel");
+    String tel = (String)session.getAttribute("tel");
+    int idx = (Integer)session.getAttribute("idx");
+
     if (name==null){
         response.sendRedirect("login.jsp");
     }
@@ -70,12 +72,12 @@
         <img src="../image/back.png" id="backImg" onclick="moveBackEvent()">
         <div id="buttonBox">
             <form action="updateInfo.jsp">
-                <button class="footerButtons" type="button">
-                    <a class="noColor" href="updateInfo.jsp">수정</a>
+                <button class="footerButtons">
+                    수정
                 </button>
             </form>
             <form action="deleteAccountAction.jsp">
-                <button class="footerButtons" type="button">탈퇴</button>
+                <button class="footerButtons">탈퇴</button>
             </form>
         </div>
     </footer>

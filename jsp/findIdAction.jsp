@@ -13,7 +13,7 @@
     String redirectPage="";
 
     String name = request.getParameter("name");
-    int tel = Integer.parseInt(request.getParameter("tel"));
+    String tel = request.getParameter("tel");
 
     // 데이터베이스 통신 코드
 
@@ -24,11 +24,11 @@
     Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/week10","Sohyunxxi","1234");
 
     // SQL 만들기
-    String sql = "SELECT id FROM user WHERE tel=?";
+    String sql = "SELECT id FROM user WHERE tel=? AND name=?";
     PreparedStatement query = connect.prepareStatement(sql);
+    query.setString(1, tel);
+    query.setString(2, name);
 
-    // 여기서는 setInt만 사용하면 됩니다.
-    query.setInt(1, tel);
 
     // query 전송
     rs = query.executeQuery();

@@ -11,7 +11,7 @@
     String username = request.getParameter("name");
     String idValue = request.getParameter("id");
     String pwValue = request.getParameter("pw");
-    int tel = Integer.parseInt(request.getParameter("tel"));
+    String tel = request.getParameter("tel");
     String team = request.getParameter("team");
     String company = request.getParameter("company");
 
@@ -30,7 +30,7 @@
     query.setString(1, idValue);
     query.setString(2, pwValue);
     query.setString(3, username);
-    query.setInt(4, tel);
+    query.setString(4, tel);
     query.setString(5, team);
     query.setString(6, company);
 

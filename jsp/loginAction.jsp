@@ -28,14 +28,14 @@
             String dbId = rs.getString("id");
             String dbpw = rs.getString("pw");
             int idx = rs.getInt("user_idx");
-            int tel = rs.getInt("tel");
+            String tel = rs.getString("tel");
             String team = rs.getString("department");
             String role = rs.getString("role");
             String name = rs.getString("name");
             if(pwValue.equals(dbpw)){
                 session.setAttribute("userId", idValue);
                 session.setAttribute("userPw", pwValue);
-                session.setAttribute("userIdx", idx);
+                session.setAttribute("idx", idx);
                 session.setAttribute("tel", tel);
                 session.setAttribute("team", team);
                 session.setAttribute("role", role);

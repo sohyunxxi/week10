@@ -133,8 +133,7 @@ function checkNoInput() {
     } else if (!validateRadioSelection(teamInputs) || !validateRadioSelection(companyInputs)) {
         alert('부서명과 직급을 선택해주세요.');
     } else {
-        alert('회원가입에 성공하였습니다. 로그인해 주세요');
-        location.href = "../jsp/logIn.jsp";
+       // alert('회원가입에 성공하였습니다. 로그인해 주세요');
     }
 }
 

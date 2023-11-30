@@ -14,7 +14,7 @@
 
     String name = request.getParameter("name");
     String id = request.getParameter("id");
-    int tel = Integer.parseInt(request.getParameter("tel"));
+    String tel = request.getParameter("tel");
 
     // Declare pw variable here
     String pw = "";
@@ -33,7 +33,7 @@
 
     query.setString(1, name);
     query.setString(2, id);
-    query.setInt(3, tel);
+    query.setString(3, tel);
 
     // query 전송
     rs = query.executeQuery();

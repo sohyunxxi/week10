@@ -12,7 +12,8 @@
     String pw = (String)session.getAttribute("userPw");
     String role = (String)session.getAttribute("role");
     String team =(String)session.getAttribute("team");
-    int tel = (Integer)session.getAttribute("tel");
+    String tel = (String)session.getAttribute("tel");
+    int idx = (Integer)session.getAttribute("idx");
     if (name==null){
         response.sendRedirect("login.jsp");
     }
@@ -33,51 +34,53 @@
     <header>
         <h1 id="mainFont">내 정보 수정</h1>
     </header>
-    <main>
-        <div id="loginBox">
-            <div class="insertBox">
-                <span id="nameFont">이름 : </span>
-                <span id="nameFont">이소현 </span>
-            </div>
-            <div class="insertBox">
-                <span id="idFont">아이디 : </span>
-                <span id="nameFont">sohyunxxi</span>
+    <form action="updateInfoAction.jsp">
+        <main>
+            <div id="loginBox">
+                <div class="insertBox">
+                    <span id="nameFont">이름 : </span>
+                    <span id="nameFont"><%=name %></span>
+                </div>
+                <div class="insertBox">
+                    <span id="idFont">아이디 : </span>
+                    <span id="nameFont"><%=id %></span>
 
-            </div>
-            <div id="pwInsertBox">
-                <span id="pwFont">비밀번호 : </span>
-                <input id="pwBox" type="password" placeholder="4자 이상 16자 이하로 입력해주세요." value="1234메롱"></span>
-            </div>
-            <div id="confirmInsertBox">
-                <span>재확인 비밀번호 : </span>
-                <input id="confirmPwBox" type="password" placeholder="4자 이상 16자 이하로 입력해주세요." value="1234메롱"></span>
-            </div>
-            <div id="telInsertBox">
-                <span id="telFont">전화번호 : </span>
-                <input id="telBox" value="01032431578" placeholder="-(하이픈)은 제외한 숫자만 입력해주세요."></span>
-            </div>
-            <div id="teamInsertBox">
-                <span id="selectTeam">부서명 : </span>
-                <div class="selectFont">
-                    <input type="radio" name="team" value="디자인"> 디자인
-                    <input type="radio" name="team" value="개발" checked> 개발
+                </div>
+                <div id="pwInsertBox">
+                    <span id="pwFont">비밀번호 : </span>
+                    <input id="pwBox" name="pw" type="password" placeholder="4자 이상 16자 이하로 입력해주세요." value="<%=pw %>"></span>
+                </div>
+                <div id="confirmInsertBox">
+                    <span>재확인 비밀번호 : </span>
+                    <input id="confirmPwBox" type="password" placeholder="4자 이상 16자 이하로 입력해주세요." value="<%=pw %>"></span>
+                </div>
+                <div id="telInsertBox">
+                    <span id="telFont">전화번호 : </span>
+                    <input id="telBox" name="tel" value="<%=tel %>" placeholder="-(하이픈)은 제외한 숫자만 입력해주세요."></span>
+                </div>
+                <div id="teamInsertBox">
+                    <span id="selectTeam">부서명 : </span>
+                    <div class="selectFont">
+                        <input type="radio" name="team" value="디자인"> 디자인
+                        <input type="radio" name="team" value="개발"> 개발
+                    </div>
+                </div>
+                <div id="occInsertBox">
+                    <span id="selectOcc">직급선택 : </span>
+                    <div id="selectBox">
+                        <input type="radio" name="company" value="팀장"> 팀장
+                        <input type="radio" name="company" value="팀원"> 팀원
+                    </div>
                 </div>
             </div>
-            <div id="occInsertBox">
-                <span id="selectOcc">직급선택 : </span>
-                <div id="selectBox">
-                    <input type="radio" name="company" value="팀장"> 팀장
-                    <input type="radio" name="company" value="팀원" checked> 팀원
+        </main>
+        <footer>
+            <img src="../image/back.png" id="backImg" onclick="moveBackEvent()">
+                <div id="buttonBox">
+                    <button class="footerButtons" onclick="updateEvent()">완료</button>
                 </div>
-            </div>
-        </div>
-    </main>
-    <footer>
-        <img src="../image/back.png" id="backImg" onclick="moveBackEvent()">
-        <div id="buttonBox">
-            <button class="footerButtons" onclick="updateEvent()">완료</button>
-        </div>
-    </footer>
+        </footer>
+    </form>
     <script src="../js/showInfo.js"></script>
 </body>
 

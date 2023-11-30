@@ -12,7 +12,9 @@
     String pw = (String)session.getAttribute("userPw");
     String role = (String)session.getAttribute("role");
     String team =(String)session.getAttribute("team");
-    int tel = (Integer)session.getAttribute("tel");
+    String tel = (String)session.getAttribute("tel");
+    int idx = (Integer)session.getAttribute("idx");
+
     if (name==null){
         response.sendRedirect("login.jsp");
     }
