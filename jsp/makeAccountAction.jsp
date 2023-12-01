@@ -15,6 +15,8 @@
     String team = request.getParameter("team");
     String company = request.getParameter("company");
 
+    System.out.println(idValue);
+
     int accountSet = 0;
     //데이터베이스 통신 코드
 

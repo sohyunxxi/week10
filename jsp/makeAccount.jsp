@@ -24,7 +24,7 @@
                 <span id="nameFont" class="fontSize">이름 : </span>
                 <input id="nameBox" placeholder="필수 입력 사항입니다." name="name" type="text" length="14" maxlength="12">
             </div>
-            <div class="insertBox">
+            <div class="insertBox" id="idAppendBox">
                 <span id="idFont" class="fontSize">아이디 : </span>
                 <input id="idBox" placeholder="4~10자리 사이" name="id" type="text" length="18" maxlength="16">
                 <button type="button" id="checkButton" onclick="checkIdDuplicate()">중복확인</button>

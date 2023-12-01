@@ -154,33 +154,11 @@
             <form action="makeEvent.jsp">
                 <h2 id="modalDate" >모달 날짜 나오는곳</h2>
                 <input type="hidden" id="eventDate" name="eventDate" value="날짜">
-            <span id="planCount">+3</span>
+            <span id="planCount"></span>
             <hr>
             <hr>
             <div id="planBox">
-                <!-- 
-                    <div class="modalPlan">
-                    <span class="planTime">
-                        <div class="modalButtonsHidden">
-                            <button onclick="timeFront('minute')"><img class="modalButtonPic"
-                                    src="../image/upButton.png"></button>
-                            <button onclick="timeBack('minute')"><img class="modalButtonPic"
-                                    src="../image/downButton.png"></button>
-                        </div>11 :
-                        <div class="modalButtonsHidden">
-                            <button onclick="timeFront('minute')"><img class="modalButtonPic"
-                                    src="../image/upButton.png"></button>
-                            <button onclick="timeBack('minute')"><img class="modalButtonPic"
-                                    src="../image/downButton.png"></button>
-                        </div>30
-                    </span>
-                    <span class="planContext">정연 팀원 밥 약속</span>
-                    <div class="modalButtons">
-                        <button class="modalPlanButton" onclick="updatePlanEvent(event)">수정</button>
-                        <button class="modalPlanButton" onclick="deletePlanEvent(event)">삭제</button>
-                    </div>
-                </div>
-                -->
+              
             </div>
             <hr>
             <h3>일정 추가</h3>
@@ -243,16 +221,16 @@
 
     // 팀원 목록을 동적으로 생성하여 추가
     var peopleBox = document.getElementById("peopleBox");
-        for (var i = 0; i < idList.length; i++) {
-            var span = document.createElement("span");
-            span.className = "navInfo";
-            var a = document.createElement("a");
-            a.className = "noColor";
-            a.href = "#";
-            a.innerText = nameList[i] + " (" + idList[i] + ")";
-            span.appendChild(a);
-            peopleBox.appendChild(span);
-        }
+    for (var i = 0; i < idList.length; i++) {
+        var span = document.createElement("span");
+        span.className = "navInfo";
+        var a = document.createElement("a");
+        a.className = "noColor";
+        a.href = "#";
+        a.innerText = nameList[i] + " (" + idList[i] + ")";
+        span.appendChild(a);
+        peopleBox.appendChild(span);
+    }
 
 
 
@@ -340,7 +318,7 @@
             dayBox.setAttribute("onclick", "openModalEvent(" + selectedMonth + "," + (i + 1) + ")");
             dayBox.textContent = i + 1;
             days.appendChild(dayBox);
-            
+
             if ((i + 1) % 7 == 0) {
                 days.appendChild(document.createElement("br"));
             }
@@ -355,7 +333,7 @@
         black.style.display = "block";
     }
     function closeMenu() {
-        
+
         var hidden = document.getElementById('hidden');
         var black = document.getElementById('blackBox');
         hidden.style.right = "-320px";
@@ -364,123 +342,85 @@
     //event 붙이기
     function closeModalEvent() {
         var planBox = document.getElementById("planBox");
-    
-    // 모든 modalPlan 클래스를 가진 요소를 제거
-    var modalPlans = planBox.getElementsByClassName("modalPlan");
-    while (modalPlans.length > 0) {
-        planBox.removeChild(modalPlans[0]);
+
+        // 모든 modalPlan 클래스를 가진 요소를 제거
+        var modalPlans = planBox.getElementsByClassName("modalPlan");
+        while (modalPlans.length > 0) {
+            planBox.removeChild(modalPlans[0]);
+        }
+        var modal = document.getElementById('modal');
+        modal.style.display = 'none';
+
+
+
     }
-            var modal = document.getElementById('modal');
-            modal.style.display = 'none';
-           // matchingIndices.length = 0; // 배열 비우기
+function updatePlanEvent(event) {
+    var eventSpan = document.getElementById("eventContent");
+    var editButton = document.getElementById("eventUpdateButton");
+    var currentEvent = eventSpan.textContent;
+    var eventIdx = document.getElementById("eventIdxInput").value;
+    var planInput;
 
-            
-        }
-        function updatePlanEvent(event) {
-            var parentDiv = event.target.closest('.modalPlan');
-            var timeSpan = parentDiv.querySelector('.planTime');
-            var eventSpan = parentDiv.querySelector('.planContext');
-            var editButton = parentDiv.querySelector('.modalButtons button');
-            var modalButtonsHidden = parentDiv.querySelector('.modalButtonsHidden');
-            if (timeSpan.style.display === 'none') {
-                // 이미 수정 중인 경우, 저장 처리
-                var hourInput = parentDiv.querySelector('.modalTimeNum.hour');
-                var minuteInput = parentDiv.querySelector('.modalTimeNum.minute');
-                timeSpan.textContent = hourInput.textContent + ' :' + minuteInput.textContent;
-                eventSpan.textContent = document.getElementsByClassName('planInput')[0].value;
+    if (editButton.textContent === '수정') {
+        planInput = document.createElement('input');
+        planInput.classList = 'planInput';
+        planInput.placeholder = '최대 50자까지 적을 수 있습니다. ';
+        planInput.maxLength = '50';
+        planInput.value = currentEvent;
+        planInput.name = "planInputName";
+        var planAppendBox = document.getElementById("planAppendBox");
+        planAppendBox.appendChild(planInput);
+        eventSpan.style.display = 'none';
+        editButton.textContent = '저장';
+    } else {
+        // 수정한 값을 updatePlanAction에 넘김.
+        planInput = document.querySelector('.planInput');
+        location.href = 'updatePlanAction.jsp?eventIdx=' + eventIdx + '&planContext=' + planInput.value;
+        editButton.textContent = '수정';
+        eventSpan.style.display = 'block';
+        eventSpan.textContent = planInput.value; // 수정한 값을 span에 저장
+        planInput.remove(); // input 엘리먼트 제거
+    }
+}
 
-                // 숨겼던 기존 요소 다시 표시
-                timeSpan.style.display = '';
-                eventSpan.style.display = '';
-                hourInput.style.display = 'inline';
-                minuteInput.style.display = 'inline';
-                modalButtonsHidden.style.display = "flex";
 
-                // input text와 textarea 제거
-                parentDiv.removeChild(hourInput);
-                parentDiv.removeChild(minuteInput);
-                parentDiv.removeChild(document.getElementsByClassName('planInput')[0]);
 
-                // 다시 수정 버튼으로 변경
-                editButton.textContent = '수정';
-            } else {
-                // 수정 시작
-                // 현재 값 저장
-                var currentTime = timeSpan.textContent;
-                var currentEvent = eventSpan.textContent;
+    function deletePlanEvent(event) {
+        var eventIdx = document.getElementById("eventIdxInput").value;
+        location.href = 'deletePlan.jsp?eventIdx=' + eventIdx;
+    }
 
-                // 시간과 분 추출
-                var [hour, minute] = currentTime.match(/\d+/g);
-                // input 요소 생성
-                var hourInput = document.createElement('span');
-                hourInput.className = 'modalTimeNum hour';
-                hourInput.textContent = hour;
+    function timeBack(unit) {
+        var numElement = document.querySelector('.modalTimeNum.' + unit);
+        var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
 
-                var minuteInput = document.createElement('span');
-                minuteInput.className = 'modalTimeNum minute';
-                minuteInput.textContent = minute;
+        if (numElement && hiddenInputElement) {
+            var currentNum = parseInt(numElement.textContent);
 
-                var planInput = document.createElement('textarea');
-                planInput.classList = 'planInput';
-                planInput.placeholder = '최대 50자까지 적을 수 있습니다. ';
-                planInput.cols = '55';
-                planInput.rows = '5';
-                planInput.maxLength = '50';
-                planInput.value = currentEvent;
-
-                // 기존 요소 숨기기
-                timeSpan.style.display = 'none';
-                eventSpan.style.display = 'none';
-                modalButtonsHidden.style.display = "none";
-
-                // 생성한 요소 추가
-                parentDiv.insertBefore(hourInput, timeSpan);
-                parentDiv.insertBefore(document.createTextNode('시 '), timeSpan.nextSibling);
-                parentDiv.insertBefore(minuteInput, timeSpan.nextSibling.nextSibling);
-                parentDiv.insertBefore(planInput, eventSpan);
-                parentDiv.insertBefore(document.createTextNode('분'), timeSpan.nextSibling.nextSibling.nextSibling);
-
-                // 수정 버튼 클릭 시 저장 및 원상복구
-                editButton.textContent = '저장';
+            if (currentNum > 0) {
+                numElement.textContent = (currentNum - 1).toString().padStart(2, '0');
+                hiddenInputElement.value = numElement.textContent;
             }
         }
+    }
 
-        function deletePlanEvent(event) {
-            var eventIdx = document.getElementById("eventIdxInput").value;
-            location.href='deletePlan.jsp?eventIdx=' + eventIdx;
-        }
-        
-        function timeBack(unit) {
-            var numElement = document.querySelector('.modalTimeNum.' + unit);
-            var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
+    function timeFront(unit) {
+        var numElement = document.querySelector('.modalTimeNum.' + unit);
+        var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
 
-            if (numElement && hiddenInputElement) {
-                var currentNum = parseInt(numElement.textContent);
-
-                if (currentNum > 0) {
-                    numElement.textContent = (currentNum - 1).toString().padStart(2, '0');
-                    hiddenInputElement.value = numElement.textContent;
-                }
+        if (numElement && hiddenInputElement) {
+            var currentNum = parseInt(numElement.textContent);
+            if (unit === 'hour' && currentNum < 23) {
+                numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
+                hiddenInputElement.value = numElement.textContent;
+            } else if (unit === 'minute' && currentNum < 59) {
+                numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
+                hiddenInputElement.value = numElement.textContent;
             }
         }
+    }
 
-        function timeFront(unit) {
-            var numElement = document.querySelector('.modalTimeNum.' + unit);
-            var hiddenInputElement = document.querySelector('input[name=' + unit + 'Hidden]');
 
-            if (numElement && hiddenInputElement) {
-                var currentNum = parseInt(numElement.textContent);
-                if (unit === 'hour' && currentNum < 23) {
-                    numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
-                    hiddenInputElement.value = numElement.textContent;
-                } else if (unit === 'minute' && currentNum < 59) {
-                    numElement.textContent = (currentNum + 1).toString().padStart(2, '0');
-                    hiddenInputElement.value = numElement.textContent;
-                }
-            }
-        }
-
-        
     function openModalEvent(selectedMonth, day) {
 
         var modal = document.getElementById('modal');
@@ -534,6 +474,8 @@
                 {
                     var div = document.createElement("div");
                     var planDiv = document.createElement("div"); // 일정을 나타내는 요소와 modalbuttons를 묶는 div
+                    var spanTimeInfo = document.createElement("span");
+                    var spanContentInfo = document.createElement("span");
                     var spanTime = document.createElement("span");
                     var spanContent = document.createElement("span");
                     var hidden = document.createElement("input");
@@ -541,33 +483,47 @@
                     var deleteButton = document.createElement("button");
                     var buttonDiv = document.createElement("div"); // 수정, 삭제 버튼을 감싸는 div
 
+                    spanTime.name="eventTime";
+                    spanTime.id="eventTime";
+
+                    spanContent.name="eventContent";
+                    spanContent.id="eventContent";
+
                     hidden.type = "hidden";
                     hidden.name = "eventIdx"; // name 속성 추가
+                    spanTimeInfo.className = "planContext";
+                    spanContentInfo.className = "planContext";
                     spanTime.className = "planContext";
                     spanContent.className = "planContext";
-                    spanTime.innerText = "일정시간 " + timeList[matchingIndices[i]] 
-                    spanContent.innerText = " 일정내용 " + eventList[matchingIndices[i]];
+                    spanTimeInfo.innerText =  "일정시간";
+                    spanContentInfo.innerText = "일정내용";
+                    spanTime.innerText =  timeList[matchingIndices[i]] 
+                    spanContent.innerText = eventList[matchingIndices[i]];
                     hidden.value = eventIdx[matchingIndices[i]]; // 특정 인덱스 사용
                     hidden.id = "eventIdxInput"; 
 
                     buttonDiv.className = "modalButtons";
 
+                    updateButton.id="eventUpdateButton";
                     updateButton.className = "modalPlanButton";
                     updateButton.type = "button";
                     updateButton.innerText = "수정";
-                    updateButton.onclick = function () {
-                        updatePlanEvent(event, eventIdx[matchingIndices[i]]); // 수정 버튼 클릭 시 updatePlanEvent 함수 호출
-                    };
+                    updateButton.setAttribute('onclick', 'updatePlanEvent()');
+                    
 
                     deleteButton.className = "modalPlanButton";
                     deleteButton.type = "button";
                     deleteButton.innerText = "삭제";
                     deleteButton.setAttribute('onclick', 'deletePlanEvent()');
                     
-
+                    div.id="planAppendBox";
                     // div에 span, hidden, form 추가
+                    div.appendChild(spanTimeInfo);
                     div.appendChild(spanTime);
+                    div.appendChild(spanContentInfo);
                     div.appendChild(spanContent);
+                   
+
 
                     div.appendChild(hidden);
 

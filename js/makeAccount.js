@@ -1,24 +1,32 @@
 function checkIdDuplicate() {
     var idInput = document.getElementById('idBox');
     var idValue = idInput.value.trim();
-    var idRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,12}$/;  // 영어와 숫자를 포함하고, 4자리 이상 12자리 이하
+    var idRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,12}$/;
+
     if (idValue === '') {
         alert('아이디를 입력하세요.');
-    } else if (!idRegex.test(idInput.value.trim())) {
+    } else if (!idRegex.test(idValue)) {
         alert('아이디는 영어와 숫자를 포함하여 4자리 이상 12자리 이하로 설정해주세요.');
     } else {
-        // 동기적 AJAX 요청 사용
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'checkIdDuplicate.jsp', false); // 세 번째 매개변수를 false로 설정하여 동기 요청 사용
+        xhr.open('POST', 'checkIdDuplicate.jsp', false);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('id=' + idValue);
 
-        handleDuplicateCheckResponse(xhr.responseText);
+        // 응답값 확인 및 처리
+        var isDuplicate = xhr.responseText.trim() === 'true';
+        if (isDuplicate) {
+            alert('이미 사용 중인 아이디입니다.');
+        } else {
+            // 아이디 사용 가능한 경우 모달 창 열기
+            modalOpen('아이디 사용 가능합니다!');
+        }
     }
 }
 
 
-function handleDuplicateCheckResponse(response) {
+
+function modalOpen(response) {
     var modalText = document.getElementById('modalText');
     var useIdButton = document.getElementById('useIdButton');
     var modal = document.getElementById('myModal');
@@ -40,12 +48,11 @@ function handleDuplicateCheckResponse(response) {
 }
 
 function useId() {
-    // 아이디 사용하기 버튼을 누른 경우의 처리
-    alert('아이디를 사용하셨습니다.');
-
-    // 아이디 입력 상자 비활성화
+    // 아이디 입력 상자 숨기기
     var idInput = document.getElementById('idBox');
-    idInput.disabled = true;
+    console.log(idInput.value);
+
+    idInput.setAttribute('type', 'hidden');
 
     // 중복 확인 버튼 숨기기
     var checkButton = document.getElementById('checkButton');
@@ -53,7 +60,18 @@ function useId() {
 
     // 모달 창 닫기
     closeModal();
+
+    // 여기서부터는 숨긴 input 값을 활용하는 로직
+    var temp = idInput.value;
+    var div = document.createElement("div");
+    // div.id = "idBox";
+    var idAppendBox = document.getElementById("idAppendBox");
+    idAppendBox.appendChild(div);
+    div.innerHTML = temp;
+    console.log(idInput.value);
+
 }
+
 
 function closeModal() {
     // 모달 창 닫기
