@@ -239,7 +239,7 @@
     var idList = <%=idList%>;
     var nameList = <%=nameList%>;
     var modalCompareDate = "";
-    var matchingIndices = [];
+
 
     // 팀원 목록을 동적으로 생성하여 추가
     var peopleBox = document.getElementById("peopleBox");
@@ -340,24 +340,7 @@
             dayBox.setAttribute("onclick", "openModalEvent(" + selectedMonth + "," + (i + 1) + ")");
             dayBox.textContent = i + 1;
             days.appendChild(dayBox);
-            if (i == 18) {
-                var count = (document.createElement("span"));
-                dayBox.appendChild(count);
-                count.textContent = "+3";
-                count.setAttribute("class", "countFont")
-            }
-            if (i == 5) {
-                var count = (document.createElement("span"));
-                dayBox.appendChild(count);
-                count.textContent = "+9";
-                count.setAttribute("class", "countFont")
-            }
-            if (i == 20) {
-                var count = (document.createElement("span"));
-                dayBox.appendChild(count);
-                count.textContent = "+1";
-                count.setAttribute("class", "countFont")
-            }
+            
             if ((i + 1) % 7 == 0) {
                 days.appendChild(document.createElement("br"));
             }
@@ -372,6 +355,7 @@
         black.style.display = "block";
     }
     function closeMenu() {
+        
         var hidden = document.getElementById('hidden');
         var black = document.getElementById('blackBox');
         hidden.style.right = "-320px";
@@ -379,8 +363,18 @@
     }
     //event 붙이기
     function closeModalEvent() {
+        var planBox = document.getElementById("planBox");
+    
+    // 모든 modalPlan 클래스를 가진 요소를 제거
+    var modalPlans = planBox.getElementsByClassName("modalPlan");
+    while (modalPlans.length > 0) {
+        planBox.removeChild(modalPlans[0]);
+    }
             var modal = document.getElementById('modal');
             modal.style.display = 'none';
+           // matchingIndices.length = 0; // 배열 비우기
+
+            
         }
         function updatePlanEvent(event) {
             var parentDiv = event.target.closest('.modalPlan');
@@ -502,12 +496,11 @@
 
 
         modal.style.display = 'flex';
-        matchingIndices=[];
         doAdditionalWork();
     }
 
     function doAdditionalWork() {
-        
+        var matchingIndices = [];
         eventDateMatch = modalCompareDate.match(/(\d{1,2})월 (\d{1,2})일/);
         console.log(modalCompareDate);
         console.log(eventDateMatch);
@@ -541,7 +534,8 @@
                 {
                     var div = document.createElement("div");
                     var planDiv = document.createElement("div"); // 일정을 나타내는 요소와 modalbuttons를 묶는 div
-                    var span = document.createElement("span");
+                    var spanTime = document.createElement("span");
+                    var spanContent = document.createElement("span");
                     var hidden = document.createElement("input");
                     var updateButton = document.createElement("button");
                     var deleteButton = document.createElement("button");
@@ -549,8 +543,10 @@
 
                     hidden.type = "hidden";
                     hidden.name = "eventIdx"; // name 속성 추가
-                    span.className = "planContext";
-                    span.innerText = "일정시간 " + timeList[matchingIndices[i]] + " 일정내용 " + eventList[matchingIndices[i]];
+                    spanTime.className = "planContext";
+                    spanContent.className = "planContext";
+                    spanTime.innerText = "일정시간 " + timeList[matchingIndices[i]] 
+                    spanContent.innerText = " 일정내용 " + eventList[matchingIndices[i]];
                     hidden.value = eventIdx[matchingIndices[i]]; // 특정 인덱스 사용
                     hidden.id = "eventIdxInput"; 
 
@@ -570,7 +566,9 @@
                     
 
                     // div에 span, hidden, form 추가
-                    div.appendChild(span);
+                    div.appendChild(spanTime);
+                    div.appendChild(spanContent);
+
                     div.appendChild(hidden);
 
                     // buttonDiv에 버튼 추가
