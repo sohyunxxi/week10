@@ -102,7 +102,6 @@
             <button onclick="nextYearEvent()" class="yearButton"><img class="yearImage"
                     src="../image/year_right.png"></button>
         </div>
-        <form>
             <div id="months">
                 <button class="monthButton" value="1" onclick="daysOfMonth(this)">1</button>
                 <button class="monthButton" value="2" onclick="daysOfMonth(this)">2</button>
@@ -117,7 +116,6 @@
                 <button class="monthButton" value="11" onclick="daysOfMonth(this)">11</button>
                 <button class="monthButton" value="12" onclick="daysOfMonth(this)">12</button>
             </div>
-        </form>
     </header>
     <hr id="divideLine">
     <nav>
@@ -244,7 +242,17 @@
     var matchingIndices = [];
 
     // 팀원 목록을 동적으로 생성하여 추가
-
+    var peopleBox = document.getElementById("peopleBox");
+        for (var i = 0; i < idList.length; i++) {
+            var span = document.createElement("span");
+            span.className = "navInfo";
+            var a = document.createElement("a");
+            a.className = "noColor";
+            a.href = "#";
+            a.innerText = nameList[i] + " (" + idList[i] + ")";
+            span.appendChild(a);
+            peopleBox.appendChild(span);
+        }
 
 
 
@@ -374,117 +382,6 @@
             var modal = document.getElementById('modal');
             modal.style.display = 'none';
         }
-    function openModalEvent(selectedMonth, day) {
-
-        var modal = document.getElementById('modal');
-        var modalDate = document.getElementById('modalDate');
-        var eventDate = document.getElementById('eventDate');
-
-        // 전달받은 날짜를 모달 내부의 텍스트로 설정
-        eventDate.value = selectedMonth + "월 " + day + "일 ";
-        modalDate.textContent = selectedMonth + "월 " + day + "일 " + "일정";
-        console.log(eventDate.value);
-        modalCompareDate = eventDate.value;
-        console.log(modalCompareDate);
-
-
-        modal.style.display = 'flex';
-        doAdditionalWork();
-    }
-
-    function doAdditionalWork() {
-        
-        eventDateMatch = modalCompareDate.match(/(\d{1,2})월 (\d{1,2})일/);
-        console.log(modalCompareDate);
-        console.log(eventDateMatch);
-        if (eventDateMatch != null) {
-            var modalDay = "2023-" + eventDateMatch[1] + "-" + (eventDateMatch[2] < 10 ? '0' : '') + eventDateMatch[2];
-
-            var dayList = <%=dayList%>;
-            console.log(dayList);
-            console.log(i, modalDay);
-            console.log(i, modalDay == dayList[i]);
-            matchingIndices=[];
-
-            for (var i = 0; i < dayList.length; i++) {
-                console.log(modalDay == dayList[i]);
-                if (modalDay == dayList[i]) {
-                    matchingIndices.push(i);
-                }
-            }
-            console.log(matchingIndices);
-            var timeList = <%=timeList%>;
-            console.log(timeList);
-            var eventList = <%=eventList%>;
-            var eventIdx = <%=eventIdx%>;
-            var modalDate = document.getElementById("eventDate");
-            console.log(modalCompareDate);
-
-
-
-            for (var i = 0; i < matchingIndices.length; i++) {
-                console.log(matchingIndices);
-                {
-                    var div = document.createElement("div");
-                    var planDiv = document.createElement("div"); // 일정을 나타내는 요소와 modalbuttons를 묶는 div
-                    var span = document.createElement("span");
-                    var hidden = document.createElement("input");
-                    var updateButton = document.createElement("button");
-                    var deleteButton = document.createElement("button");
-                    var buttonDiv = document.createElement("div"); // 수정, 삭제 버튼을 감싸는 div
-
-                    hidden.type = "hidden";
-                    hidden.name = "eventIdx"; // name 속성 추가
-                    span.className = "planContext";
-                    span.innerText = "일정시간 " + timeList[matchingIndices[i]] + " 일정내용 " + eventList[matchingIndices[i]];
-                    hidden.value = eventIdx[matchingIndices[i]]; // 특정 인덱스 사용
-
-                    buttonDiv.className = "modalButtons";
-
-                    updateButton.className = "modalPlanButton";
-                    updateButton.type = "button";
-                    updateButton.innerText = "수정";
-                    updateButton.onclick = function () {
-                        updatePlanEvent(event, eventIdx[matchingIndices[i]]); // 수정 버튼 클릭 시 updatePlanEvent 함수 호출
-                    };
-
-                    deleteButton.className = "modalPlanButton";
-                    deleteButton.type = "button";
-                    deleteButton.innerText = "삭제";
-                    deleteButton.onclick = function () {
-                        // 삭제 버튼 클릭 시 해당 form 서브밋
-                        form.submit();
-                    };
-
-                    // div에 span, hidden, form 추가
-                    div.appendChild(span);
-                    div.appendChild(hidden);
-
-                    // buttonDiv에 버튼 추가
-                    buttonDiv.appendChild(updateButton);
-                    buttonDiv.appendChild(deleteButton);
-
-                    // planDiv에 div, buttonDiv 추가
-                    planDiv.appendChild(div);
-                    planDiv.appendChild(buttonDiv);
-
-                    // planDiv에 modalPlan 클래스 추가
-                    planDiv.classList.add("modalPlan");
-
-                    // planDiv를 planBox에 추가
-                    planBox.appendChild(planDiv);
-
-                    console.log(matchingIndices);
-                }
-
-
-            }
-
-            console.log(dayList);
-            console.log(modalDay);
-
-        }
-
         function updatePlanEvent(event) {
             var parentDiv = event.target.closest('.modalPlan');
             var timeSpan = parentDiv.querySelector('.planTime');
@@ -555,8 +452,8 @@
         }
 
         function deletePlanEvent(event) {
-            var parentDiv = event.target.closest('.modalPlan');
-            parentDiv.style.display = "none";
+            var eventIdx = document.getElementById("eventIdxInput").value;
+            location.href='deletePlan.jsp?eventIdx=' + eventIdx;
         }
         
         function timeBack(unit) {
@@ -589,17 +486,119 @@
             }
         }
 
-        var peopleBox = document.getElementById("peopleBox");
-        for (var i = 0; i < idList.length; i++) {
-            var span = document.createElement("span");
-            span.className = "navInfo";
-            var a = document.createElement("a");
-            a.className = "noColor";
-            a.href = "#";
-            a.innerText = nameList[i] + " (" + idList[i] + ")";
-            span.appendChild(a);
-            peopleBox.appendChild(span);
+        
+    function openModalEvent(selectedMonth, day) {
+
+        var modal = document.getElementById('modal');
+        var modalDate = document.getElementById('modalDate');
+        var eventDate = document.getElementById('eventDate');
+
+        // 전달받은 날짜를 모달 내부의 텍스트로 설정
+        eventDate.value = selectedMonth + "월 " + day + "일 ";
+        modalDate.textContent = selectedMonth + "월 " + day + "일 " + "일정";
+        console.log(eventDate.value);
+        modalCompareDate = eventDate.value;
+        console.log(modalCompareDate);
+
+
+        modal.style.display = 'flex';
+        matchingIndices=[];
+        doAdditionalWork();
+    }
+
+    function doAdditionalWork() {
+        
+        eventDateMatch = modalCompareDate.match(/(\d{1,2})월 (\d{1,2})일/);
+        console.log(modalCompareDate);
+        console.log(eventDateMatch);
+        if (eventDateMatch != null) {
+            var modalDay = "2023-" + eventDateMatch[1] + "-" + (eventDateMatch[2] < 10 ? '0' : '') + eventDateMatch[2];
+
+            var dayList = <%=dayList%>;
+            console.log(dayList);
+            console.log(i, modalDay);
+            console.log(i, modalDay == dayList[i]);
+
+
+            for (var i = 0; i < dayList.length; i++) {
+                console.log(modalDay == dayList[i]);
+                if (modalDay == dayList[i]) {
+                    matchingIndices.push(i);
+                }
+            }
+            console.log(matchingIndices);
+            var timeList = <%=timeList%>;
+            console.log(timeList);
+            var eventList = <%=eventList%>;
+            var eventIdx = <%=eventIdx%>;
+            var modalDate = document.getElementById("eventDate");
+            console.log(modalCompareDate);
+
+
+
+            for (var i = 0; i < matchingIndices.length; i++) {
+                console.log(matchingIndices);
+                {
+                    var div = document.createElement("div");
+                    var planDiv = document.createElement("div"); // 일정을 나타내는 요소와 modalbuttons를 묶는 div
+                    var span = document.createElement("span");
+                    var hidden = document.createElement("input");
+                    var updateButton = document.createElement("button");
+                    var deleteButton = document.createElement("button");
+                    var buttonDiv = document.createElement("div"); // 수정, 삭제 버튼을 감싸는 div
+
+                    hidden.type = "hidden";
+                    hidden.name = "eventIdx"; // name 속성 추가
+                    span.className = "planContext";
+                    span.innerText = "일정시간 " + timeList[matchingIndices[i]] + " 일정내용 " + eventList[matchingIndices[i]];
+                    hidden.value = eventIdx[matchingIndices[i]]; // 특정 인덱스 사용
+                    hidden.id = "eventIdxInput"; 
+
+                    buttonDiv.className = "modalButtons";
+
+                    updateButton.className = "modalPlanButton";
+                    updateButton.type = "button";
+                    updateButton.innerText = "수정";
+                    updateButton.onclick = function () {
+                        updatePlanEvent(event, eventIdx[matchingIndices[i]]); // 수정 버튼 클릭 시 updatePlanEvent 함수 호출
+                    };
+
+                    deleteButton.className = "modalPlanButton";
+                    deleteButton.type = "button";
+                    deleteButton.innerText = "삭제";
+                    deleteButton.setAttribute('onclick', 'deletePlanEvent()');
+                    
+
+                    // div에 span, hidden, form 추가
+                    div.appendChild(span);
+                    div.appendChild(hidden);
+
+                    // buttonDiv에 버튼 추가
+                    buttonDiv.appendChild(updateButton);
+                    buttonDiv.appendChild(deleteButton);
+
+                    // planDiv에 div, buttonDiv 추가
+                    planDiv.appendChild(div);
+                    planDiv.appendChild(buttonDiv);
+
+                    // planDiv에 modalPlan 클래스 추가
+                    planDiv.classList.add("modalPlan");
+
+                    // planDiv를 planBox에 추가
+                    planBox.appendChild(planDiv);
+
+                    console.log(matchingIndices);
+                }
+
+
+            }
+
+            console.log(dayList);
+            console.log(modalDay);
+
         }
+
+       
 
 
 

@@ -16,35 +16,23 @@
     String tel = (String)session.getAttribute("tel");
     int idx = (Integer)session.getAttribute("idx");
 
-    if (name == null) {
-        response.sendRedirect("login.jsp");
-    }
+    int event_idx=  Integer.parseInt(request.getParameter("eventIdx"));
+    
     
     Connection connect = null;
-    try {
+
         Class.forName("com.mysql.jdbc.Driver");
         connect = DriverManager.getConnection("jdbc:mysql://localhost/week10", "Sohyunxxi", "1234");
 
         // SQL 만들기
-        String sql = "DELETE FROM user WHERE user_idx = ?";
+        String sql = "DELETE FROM event WHERE user_idx = ? AND event_idx=? ";
         PreparedStatement query = connect.prepareStatement(sql);
-        query.setInt(1, idx); // Use setInt for an integer parameter
+        query.setInt(1, idx);
+        query.setInt(2, event_idx);
+
 
         // query 전송
         query.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
-    } 
+        response.sendRedirect("mainCalendar.jsp");
+   
 %>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script>
-        alert("회원 정보를 삭제합니다. 안녕~");
-        location.href = "login.jsp";
-    </script>
-</body>
