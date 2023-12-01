@@ -13,6 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아이디 찾기</title>
     <link type="text/css" rel="stylesheet" href="../css/findId.css">
+    <link type="text/css" rel="stylesheet" href="../css/element.css">
+
 </head>
 <body>
     <h1 id="mainFont">아이디 찾기</h1>

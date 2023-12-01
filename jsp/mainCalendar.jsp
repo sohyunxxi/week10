@@ -19,6 +19,8 @@
     String tel = (String)session.getAttribute("tel");
     int idx = (Integer)session.getAttribute("idx");
 
+    int showTeamIdx=0;
+
     if (name==null){
         response.sendRedirect("login.jsp");
     }
@@ -37,10 +39,14 @@
 
     ArrayList<String> nameList= new ArrayList<String>();
     ArrayList<String> idList= new ArrayList<String>();
+    ArrayList<Integer> idxTeamList= new ArrayList<Integer>();
+
 
     while(result.next()){ // next가 가능할 때까지 반복문을 돌린다.
+        int t_idx = Integer.parseInt(result.getString(1));
         String t_id=result.getString(2);// 첫번째 컬럼
         String t_name=result.getString(3);// 두번째 컬럼
+        idxTeamList.add(t_idx);
         nameList.add("\""+t_name +"\"");
         idList.add("\""+t_id+"\"");
     }
@@ -87,6 +93,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메인페이지</title>
     <link type="text/css" rel="stylesheet" href="../css/mainCalendar.css">
+    <link type="text/css" rel="stylesheet" href="../css/element.css">
+
 </head>
 
 <body onload="presentMonth()">
@@ -216,23 +224,34 @@
 
     var idList = <%=idList%>;
     var nameList = <%=nameList%>;
+    var idxTeamList = <%=idxTeamList%>;
     var modalCompareDate = "";
 
 
     // 팀원 목록을 동적으로 생성하여 추가
     var peopleBox = document.getElementById("peopleBox");
     for (var i = 0; i < idList.length; i++) {
-        var span = document.createElement("span");
-        span.className = "navInfo";
-        var a = document.createElement("a");
-        a.className = "noColor";
-        a.href = "#";
-        a.innerText = nameList[i] + " (" + idList[i] + ")";
-        span.appendChild(a);
-        peopleBox.appendChild(span);
+        
+        var button = document.createElement("button");
+        var inputIdx = document.createElement("input");
+        inputIdx.value=idxTeamList[i];
+        inputIdx.name="teamIdx";
+        button.className = "navInfo";
+        var div = document.createElement("div");
+        div.innerText = nameList[i] + " (" + idList[i] + ")";
+        button.appendChild(div);
+        peopleBox.appendChild(button);
+        button.appendChild(inputIdx);
+        inputIdx.style.display="none";
+        button.setAttribute('onclick', 'changeUser(' + inputIdx.value + ')');
+
     }
 
-
+function changeUser(num){
+    console.log(num);
+    //num은 해당 유저의 idx고, 이 유저의 일정 리스트를 가져오게끔 하고싶음.
+    //<%=showTeamIdx%> = num;
+}
 
 
     function daysOfMonth(button) {

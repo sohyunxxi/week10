@@ -28,6 +28,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 정보 수정</title>
     <link type="text/css" rel="stylesheet" href="../css/updateInfo.css">
+    <link type="text/css" rel="stylesheet" href="../css/element.css">
+
 </head>
 
 <body>

@@ -41,10 +41,10 @@
                 session.setAttribute("role", role);
                 session.setAttribute("userName", name);
                 response.sendRedirect("mainCalendar.jsp");
-                return; // Redirect 후에 더 이상의 코드를 실행하지 않도록 종료
+                return; 
             } else {
                 response.sendRedirect("login.jsp");
-                return; // Redirect 후에 더 이상의 코드를 실행하지 않도록 종료
+                return; 
             }
         } else {
             response.sendRedirect("login.jsp");

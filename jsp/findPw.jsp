@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비밀번호 찾기</title>
     <link type="text/css" rel="stylesheet" href="../css/findPw.css">
+    <link type="text/css" rel="stylesheet" href="../css/element.css">
+
 </head>
 <body>
     <h1 id="mainFont">비밀번호 찾기</h1>
