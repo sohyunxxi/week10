@@ -57,32 +57,32 @@
 
     ResultSet eventRs = eventQuery.executeQuery();
 
-    
-        ArrayList<String> timeList = new ArrayList<>();
-        ArrayList<String> dayList = new ArrayList<>();
 
-        ArrayList<String> eventList = new ArrayList<>();
-        ArrayList<Integer> eventIdx = new ArrayList<>();
-    
-        while (eventRs.next()) {
-            int e_eventIdx = eventRs.getInt(1);
-            LocalDateTime e_time = eventRs.getObject(2, LocalDateTime.class);
-            
-            // 년, 월, 일 추출
-            int year = e_time.getYear();
-            int month = e_time.getMonthValue();
-            int day = e_time.getDayOfMonth();
+    ArrayList<String> timeList = new ArrayList<>();
+    ArrayList<String> dayList = new ArrayList<>();
+
+    ArrayList<String> eventList = new ArrayList<>();
+    ArrayList<Integer> eventIdx = new ArrayList<>();
+
+    while (eventRs.next()) {
+        int e_eventIdx = eventRs.getInt(1);
+        LocalDateTime e_time = eventRs.getObject(2, LocalDateTime.class);
         
-            String formattedTimeDay = String.format("%04d-%02d-%02d", year, month, day);
-            String formattedTime = String.format("%02d:%02d", e_time.getHour(), e_time.getMinute());
-            String e_eventContent = eventRs.getString(3);
+        // 년, 월, 일 추출
+        int year = e_time.getYear();
+        int month = e_time.getMonthValue();
+        int day = e_time.getDayOfMonth();
     
-            eventIdx.add(e_eventIdx);  // event_idx를 ArrayList<Integer>에 저장
-            timeList.add("\"" + formattedTime + "\"");
-            dayList.add("\"" + formattedTimeDay + "\"");
+        String formattedTimeDay = String.format("%04d-%02d-%02d", year, month, day);
+        String formattedTime = String.format("%02d:%02d", e_time.getHour(), e_time.getMinute());
+        String e_eventContent = eventRs.getString(3);
 
-            eventList.add("\"" + e_eventContent + "\"");
-        }
+        eventIdx.add(e_eventIdx);  // event_idx를 ArrayList<Integer>에 저장
+        timeList.add("\"" + formattedTime + "\"");
+        dayList.add("\"" + formattedTimeDay + "\"");
+
+        eventList.add("\"" + e_eventContent + "\"");
+    }
 
 
     
@@ -103,10 +103,10 @@
             <button onclick="previousYearEvent()" class="yearButton">
                 <img class="yearImage" src="../image/year_left.png">
             </button>
-                    <form action="makeEvent.jsp">
-                        <h1 id="year" name="year">2023</h1>
-                        <input type="hidden" id="yearHidden" name="year" value="2023">
-                    </form>
+                <form action="makeEvent.jsp">
+                    <h1 id="year" name="year">2023</h1>
+                    <input type="hidden" id="yearHidden" name="year" value="2023">
+                </form>
             <button onclick="nextYearEvent()" class="yearButton"><img class="yearImage"
                     src="../image/year_right.png"></button>
         </div>
@@ -247,11 +247,11 @@
 
     }
 
-function changeUser(num){
-    console.log(num);
-    //num은 해당 유저의 idx고, 이 유저의 일정 리스트를 가져오게끔 하고싶음.
-    //<%=showTeamIdx%> = num;
-}
+    function changeUser(num){
+        console.log(num);
+        //num은 해당 유저의 idx고, 이 유저의 일정 리스트를 가져오게끔 하고싶음.
+        //<%=showTeamIdx%> = num;
+    }
 
 
     function daysOfMonth(button) {
@@ -287,7 +287,7 @@ function changeUser(num){
         makeCalendarEvent(day);
     }
 
-    function presentMonth() {
+    function presentMonth() {//백엔드에서 처리하기
         var now = new Date();	// 현재 날짜랑 시간
         var month = now.getMonth() + 1;	// 월만 쏙 빼오기
 
@@ -298,7 +298,7 @@ function changeUser(num){
         console.log(month); //배경화면 띄우기
     }
 
-    function previousYearEvent() {
+    function previousYearEvent() {//날짜 변경해서 폼태그로 연결하기
         var year = document.getElementById('year');
         var yearHidden = document.getElementById('yearHidden');
 
@@ -324,7 +324,7 @@ function changeUser(num){
             }
         }
     }
-    function makeCalendarEvent(day) {
+    function makeCalendarEvent(day) {//이벤트 빼기
         var calendarBox = document.getElementsByTagName("main")[0];
         calendarBox.innerHTML = "";
         var days = document.createElement("div");

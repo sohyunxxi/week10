@@ -5,6 +5,11 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import = "java.sql.SQLException" %>
 
+<%
+    
+
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

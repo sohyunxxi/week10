@@ -8,10 +8,10 @@ function checkIdDuplicate() {
     } else if (!idRegex.test(idValue)) {
         alert('아이디는 영어와 숫자를 포함하여 4자리 이상 12자리 이하로 설정해주세요.');
     } else {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'checkIdDuplicate.jsp', false);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('id=' + idValue);
+        var xhr = new XMLHttpRequest(); //XMLHttpRequest 객체를 생성, 비동기통신인데 서버랑 클라이언트 간 데이터 교환 담당
+        xhr.open('POST', 'checkIdDuplicate.jsp', false); // false로 설정해서 동기적으로 통신
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');//폼 데이터를 URL 인코딩하여 전송
+        xhr.send('id=' + idValue);//서버로 데이터를 보내기
 
         // 응답값 확인 및 처리
         var isDuplicate = xhr.responseText.trim() === 'true';
@@ -147,8 +147,9 @@ function checkNoInput() {
         alert('전화번호는 숫자만 입력해주세요.');
     } else if (!validateRadioSelection(teamInputs) || !validateRadioSelection(companyInputs)) {
         alert('부서명과 직급을 선택해주세요.');
-    } else {
-       // alert('회원가입에 성공하였습니다. 로그인해 주세요');
+    } else  {
+        // 모든 조건이 충족되었을 때 form을 submit
+        document.forms[0].submit();
     }
 }
 
